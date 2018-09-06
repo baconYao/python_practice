@@ -116,15 +116,33 @@ def delete_todo(todos, which):
     del todos[which-1]
     return "Deleted todo #" + str(which)
 
+def edit_todo(todos, which, title, description, level):
+    if not which.isdigit():
+        return ("'" + which + "' needs to be the number of a todo!")
+    which = int(which)
+    if which < 1 or which > len(todos):
+        return ("'" + str(which) + "' needs to be the number of a todo!")
+
+    todo = todos[which-1]
+    if title != "":
+        todo['title'] = title
+    if description != "":
+        todo['description'] = description
+    if level != "":
+        todo['level'] = level
+
+    sort_todos()
+    return "Edited todo #" + str(which)
+
 # Given the name of the command you want to run, get_function will return the function you need to call
 commands = {
     # Key: command, value: the function that will be called
     'new': [create_todo, ['title', 'description', 'level']],
     'test': [test, ['abcd', 'ijkl']],
     'show': [show_todos, []],
-    'delete': [delete_todo, ['which']]
+    'delete': [delete_todo, ['which']],
+    'edit': [edit_todo, ['which', 'title', 'description', 'level']]
 }
-
 
 def main_loop():
     user_input = ""

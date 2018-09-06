@@ -215,6 +215,45 @@ def test_delete_todo_failure():
 
     print "OK - test delete todo failures"
 
+def test_edit_todo():
+    todo.todos = [
+        {
+            'title': 'make some stuff',
+            'description': 'This is an important test',
+            'level': 'IMPORTANT'
+        }
+    ]
+    # Edit this todo item
+    response = todo.edit_todo(todo.todos, which="1", title="", description="Stuff needs to be programmed prperly", level="")
+
+    assert response == "Edited todo #1", response
+    assert todo.todos[0]['title'] == "make some stuff"
+    assert todo.todos[0]['description'] == "Stuff needs to be programmed prperly"
+    assert todo.todos[0]['level'] == "IMPORTANT"
+
+    print "OK - edit todo"
+
+def test_edit_importance():
+    todo.todos = [
+        {
+            'title': 'djkajs owjo',
+            'description': 'This is an medium test',
+            'level': 'Medium'
+        },
+        {
+            'title': 'Test another medium todo',
+            'description': 'This is another medium test',
+            'level': 'Medium'
+        }
+    ]
+    # Edit the second todo item's importance
+    response = todo.edit_todo(todo.todos, which="2", title="", description="", level="Important")
+
+    assert todo.todos[0]['level'] == "IMPORTANT"
+    assert todo.todos[1]['level'] == "Medium"
+
+    print "OK - edit importance"
+
 # Run test
 test_create_todo()
 test_get_function()
@@ -227,3 +266,5 @@ test_save_todo_list()
 test_todo_sort_after_creation()
 test_delete_todo()
 test_delete_todo_failure()
+test_edit_todo()
+test_edit_importance()
