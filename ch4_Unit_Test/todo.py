@@ -1,4 +1,4 @@
-import textwrap
+import textwrap, pickle, os
 
 todos = []
 
@@ -92,6 +92,21 @@ def show_todos(todos):
     # print output
     return output
 
+def save_todo_list():
+    save_file = file("todos.pickle", "w")
+    # dump todos into file
+    pickle.dump(todos, save_file)
+    save_file.close()
+
+def load_todo_list():
+    # todos variable needs to be global
+    global todos
+    # Make sure save file exists
+    if os.access("todos.pickle", os.F_OK):
+        save_file = file("todos.pickle")
+        # Load todos from file
+        todos = pickle.load(save_file)
+
 # Given the name of the command you want to run, get_function will return the function you need to call
 commands = {
     # Key: command, value: the function that will be called
@@ -103,6 +118,7 @@ commands = {
 
 def main_loop():
     user_input = ""
+    load_todo_list()
     while 1:
         # Do something with user input
         print run_command(user_input)
@@ -112,6 +128,7 @@ def main_loop():
         if user_input.lower().startswith("quit"):
             print "Exiting..."
             break
+    save_todo_list()
 
 # Only run main_loop if you're run directly
 if __name__ == '__main__':

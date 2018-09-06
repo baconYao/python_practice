@@ -1,5 +1,6 @@
 # Import todo.py in same directory
 import todo
+import os
 
 def test_create_todo():
     # List of to-dos
@@ -124,11 +125,34 @@ def test_todo_wrap_long_lines():
 
     print "OK - todo wrap long lines"
 
+def test_save_todo_list():
+    todos_original = [
+        {
+            "title": "test todo",
+            "description": "This is a test",
+            "level": "Important"
+        }
+    ]
+    todo.todos = todos_original
+    assert "todos.pickle" not in os.listdir('.')
+    
+    # Test saving
+    todo.save_todo_list()
+    assert "todo.pickle" in os.listdir('.')
+
+    # Test loading
+    todo.load_todo_list()
+    assert todo.todos == todos_original
+    os.unlink("todos.pickle")
+
+    print "OK - save todo list"
+
 # Run test
-test_create_todo()
-test_get_function()
-test_get_fields()
-test_run_command()
-test_show_todos()
-test_todo_sort_order()
-test_todo_wrap_long_lines()
+# test_create_todo()
+# test_get_function()
+# test_get_fields()
+# test_run_command()
+# test_show_todos()
+# test_todo_sort_order()
+# test_todo_wrap_long_lines()
+test_save_todo_list()
