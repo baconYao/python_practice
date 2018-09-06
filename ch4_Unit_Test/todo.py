@@ -3,13 +3,14 @@ import textwrap, pickle, os
 todos = []
 
 def create_todo(todos, title, description, level):
-    """Create an todo item"""
     todo = {
         "title": title,
         "description": description,
         "level": level
     }
     todos.append(todo)
+    sort_todos()
+    return "Created '%s'." % title
 
 def test(todos, abcd, ijkl):
     return "Command 'test' returned:\n" + \
@@ -75,19 +76,18 @@ def show_todo(todo, index):
         output += "\n"
     return output
 
-def sort_todos(todos):
+def sort_todos():
+    global todos
     # Use list comprehension style to filter to-dos
     important = [capitalize(todo) for todo in todos if todo['level'].lower() == 'important']
     unimportant = [todo for todo in todos if todo['level'].lower() == 'unimportant']
     medium = [todo for todo in todos if todo['level'].lower() != 'important' and todo['level'].lower() != 'unimportant']
     # Join to-dos back up
-    sorted_todos = important + medium + unimportant
-    return sorted_todos
+    todos = important + medium + unimportant
 
 def show_todos(todos):
     output = ("Item     Title            Description              Level\n")
-    sorted_todos = sort_todos(todos)
-    for index, todo in enumerate(sorted_todos):
+    for index, todo in enumerate(todos):
         output += show_todo(todo, index)
     # print output
     return output
@@ -107,12 +107,22 @@ def load_todo_list():
         # Load todos from file
         todos = pickle.load(save_file)
 
+def delete_todo(todos, which):
+    if not which.isdigit():
+        return ("'" + which + "' needs to be the number of a todo!")
+    which = int(which)
+    if which < 1 or which > len(todos):
+        return ("'" + str(which) + "' needs to be the number of a todo!")
+    del todos[which-1]
+    return "Deleted todo #" + str(which)
+
 # Given the name of the command you want to run, get_function will return the function you need to call
 commands = {
     # Key: command, value: the function that will be called
     'new': [create_todo, ['title', 'description', 'level']],
     'test': [test, ['abcd', 'ijkl']],
-    'show': [show_todos, []]
+    'show': [show_todos, []],
+    'delete': [delete_todo, ['which']]
 }
 
 

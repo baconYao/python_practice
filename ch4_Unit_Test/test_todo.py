@@ -7,12 +7,11 @@ def test_create_todo():
     todo.todos = []
     # Run small part of program
     todo.create_todo(todo.todos, title="Make some stuff", description="Stuff needs to be programmed", level="Important")
-
     # Test results
     assert len(todo.todos) == 1, "Todo was not created!"
     assert todo.todos[0]['title'] == "Make some stuff"
     assert (todo.todos[0]['description'] == "Stuff needs to be programmed")
-    assert todo.todos[0]['level'] == "Important"
+    assert todo.todos[0]['level'] == "IMPORTANT"
 
     print "Ok - create_todo"
 
@@ -46,6 +45,7 @@ def test_show_todos():
             'level': 'Important'
         }
     ]
+    todo.sort_todos()
     # Run show_todos function
     result = todo.show_todos(todo.todos)
     lines = result.split("\n")
@@ -83,6 +83,7 @@ def test_todo_sort_order():
             'level': 'Important'
         }
     ]
+    todo.sort_todos()
     result = todo.show_todos(todo.todos)
     lines = result.split("\n")
 
@@ -138,7 +139,7 @@ def test_save_todo_list():
     
     # Test saving
     todo.save_todo_list()
-    assert "todo.pickle" in os.listdir('.')
+    assert "todos.pickle" in os.listdir('.')
 
     # Test loading
     todo.load_todo_list()
@@ -147,12 +148,82 @@ def test_save_todo_list():
 
     print "OK - save todo list"
 
+def test_todo_sort_after_creation():
+    todo.todos = [
+        {
+            'title': 'test unimportant todo',
+            'description': 'This is an unimportant test',
+            'level': 'Unimportant'
+        },
+        {
+            'title': 'test medium todo',
+            'description': 'This is a test',
+            'level': 'Medium'
+        }
+    ]
+    # Create another to-do
+    todo.create_todo(todo.todos, title="Make some stuff", description = "Stuff needs to be programmed", level = "Important")
+    # Check to-do order
+    assert todo.todos[0]['level'] == "IMPORTANT"
+    assert todo.todos[1]['level'] == "Medium"
+    assert todo.todos[2]['level'] == "Unimportant"
+
+    print "OK - todo sort after creation"
+
+def test_delete_todo():
+    todo.todos = [
+        {
+            'title': 'test important todo',
+            'description': 'This is an important test',
+            'level': 'IMPORTANT'
+        },
+        {
+            'title': 'test medium todo',
+            'description': 'This is a test',
+            'level': 'Medium'
+        },
+        {
+            'title': 'test unimportant todo',
+            'description': 'This is an unimportant test',
+            'level': 'Unimportant'
+        }
+    ]
+
+    reponse = todo.delete_todo(todo.todos, which = "2")
+
+    assert reponse == "Deleted todo #2"
+    assert len(todo.todos) == 2
+    assert todo.todos[0]['level'] == 'IMPORTANT'
+    assert todo.todos[1]['level'] == 'Unimportant'
+
+    print "OK - test delete todo"
+
+
+def test_delete_todo_failure():
+    todo.todos = [
+        {
+            'title': 'test important todo',
+            'description': 'This is an important test',
+            'level': 'IMPORTANT'
+        }
+    ]
+
+    for bad_input in ['', 'foo', '0', '43']:
+        response = todo.delete_todo(todo.todos, bad_input)
+        assert response == ("'" + bad_input + "' needs to be the number of a todo!")
+        assert len(todo.todos) == 1
+
+    print "OK - test delete todo failures"
+
 # Run test
-# test_create_todo()
-# test_get_function()
-# test_get_fields()
-# test_run_command()
-# test_show_todos()
-# test_todo_sort_order()
-# test_todo_wrap_long_lines()
+test_create_todo()
+test_get_function()
+test_get_fields()
+test_run_command()
+test_show_todos()
+test_todo_sort_order()
+test_todo_wrap_long_lines()
 test_save_todo_list()
+test_todo_sort_after_creation()
+test_delete_todo()
+test_delete_todo_failure()
