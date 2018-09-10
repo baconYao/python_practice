@@ -38,3 +38,6 @@ $ python todo.py
 ```
 
 Todo list will be save as todos.pickle when you quit the program automatically, and load list file when you execute the program.
+
+## Ch5
+- See sub-directory
