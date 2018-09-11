@@ -17,13 +17,16 @@ def mail_report(to, ticker_name):
     # Create external container
     outer = MIMEMultipart()
     outer['Subject'] = "Stock report for " + ticker_name
-    outer['From'] = "type your email's account@gmail.com"
+    # outer['From'] = "type your email's account@gmail.com"
+    outer['From'] = "your email account@gmail.com"
     outer['To'] = to
 
     # Internal text container, create body of email
     """
         Normally an email program will display the last part of this container as the body, 
         and fall back on the others if it can’t handle it, so you put the HTML last.
+
+        "alternative" let you generate multiple versionso f a single document. The user's mail reader will then automatically decide which one to display, depending on which content type it likes best
     """
     inner = MIMEMultipart('alternative')
     text = "Here is the stock report for" + ticker_name
@@ -59,17 +62,18 @@ def send_message(message):
     try:
         # Create SMTP sender
         s = smtplib.SMTP("smtp.googlemail.com")         #In this program, I use google as SMTP server
-        s.ehlo()
-        s.starttls()
-        s.ehlo()
+        s.starttls()            # Put the SMTP connection in TLS (Transport Layer Security) mode. All SMTP commands that follow will be encrypted
+        s.ehlo()                # Greeting
 
         # Type your email account and password here
         """
             Hint: If you use 2-factor authentication, you can follow this solution:
             https://stackoverflow.com/questions/28421887/django-email-with-smtp-gmail-smtpauthenticationerror-534-application-specific-pa
         """
-        username = "type your email's account"
-        password = "type your email's password"
+        # username = "type your email's account"
+        username = "your email account"
+        # password = "type your email's password"
+        password = "your email's password"
         
         s.login(username, password)
         # Use sender to send an email
@@ -102,6 +106,8 @@ def queue_mail(message):
     mail_file.write(message.as_string() + "\n")
 
 if __name__ == "__main__":
-    email = mail_report("peiyaochang@qnap.com,bacon735392@yahoo.com.tw", "GOOG")
-    # print email.as_string()     # print out the email
-    send_message(email)
+    recipients = ["perons1@gmail.com","perons2@qnap.com" , "perons3@yahoo.com.tw"]
+    for receiver in recipients:
+        email = mail_report(receiver, "GOOG")
+        # print email.as_string()     # print out the email
+        send_message(email)
