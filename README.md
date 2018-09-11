@@ -41,3 +41,13 @@ Todo list will be save as todos.pickle when you quit the program automatically, 
 
 ## Ch5
 - See sub-directory
+
+
+## Ch6
+
+
+
+---
+## Some Useful Resources
+
+- [Erle Robotics: Python Networking Programming](https://erlerobotics.gitbooks.io/erle-robotics-python-gitbook-free/index.html)
