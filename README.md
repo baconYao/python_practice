@@ -3,10 +3,12 @@
 ## This repo fulfills some examples about [Hello, Python I](https://www.manning.com/books/hello-python)
 
 ## Ch2
+
 - Basic syntax practice 
 - Do a simple game which is called 『Hunt the Wumpus』
 
 ## Ch3
+
 - Use some standard libraries
     - os
     - sys
@@ -18,6 +20,7 @@
 
 
 ## Ch4
+
 - Build a todo list command line program
 - Write **Unit Tests** to improve the quality of this program
 
@@ -40,11 +43,31 @@ $ python todo.py
 Todo list will be save as todos.pickle when you quit the program automatically, and load list file when you execute the program.
 
 ## Ch5
+
 - See sub-directory
 
 
 ## Ch6
 
+- Remake the『Hunt the Wumpus』game in ch2 by using Class
+- Add some features
+    - Go where (north, south, east, west)
+    - Personal inventory
+    - GET and Drop the items
+    - Simple AI monster
+    - Aattck and Life
+
+## Ch7
+
+- Introduce some advanced concepts
+    - Mixin
+    - __getattr__
+    - __setattr__
+    - __getattribue__
+    - Property
+    - Generators
+    - Iterators
+    - Functional Programming
 
 
 ---
