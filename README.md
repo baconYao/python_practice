@@ -69,6 +69,10 @@ Todo list will be save as todos.pickle when you quit the program automatically, 
     - Iterators
     - Functional Programming
 
+## Ch9
+
+- Make a game by using pyglet
+- Not importnat, so I skip this chapter
 
 ---
 ## Some Useful Resources
