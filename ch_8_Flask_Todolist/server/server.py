@@ -5,6 +5,8 @@ from flask import Flask, request, jsonify
 from flask_restplus import Api, Resource
 import pymongo
 import datetime
+import json
+from bson import json_util
 
 # Connect to mongodb
 # "db_mongo_todo_flask" is mongodb container's name
@@ -25,20 +27,14 @@ api = Api(app, version='1.0', title='TodoMVC API', description='A simple TodoMVC
     CreatedDate: When is the item be created
 """
 
-
 apiUrl = '/api'
 
 @api.route(apiUrl + '/todo')
 class GetAllItems(Resource):
     def get(self):
-        items = []        
-        for x in itemCollection.find():
-            # print(x)
-            items.append(x)
-        # if not len(todos_list):
-        return items
-        # else:
-            # return todos_list
+        items = itemCollection.find()        
+        return [json.loads(json.dumps(item, indent=4, default=json_util.default))
+                for item in items]
 
 # # Specific item
 @api.route(apiUrl + '/todo/<string:todo_id>')  
