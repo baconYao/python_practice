@@ -18,8 +18,8 @@ def mail_report(to, ticker_name):
     outer = MIMEMultipart()
     outer['Subject'] = "Stock report for " + ticker_name
     # outer['From'] = "type your email's account@gmail.com"
-    outer['From'] = "your email account@gmail.com"
-    outer['To'] = to
+    outer['From'] = "your email acoun@gmail.com"
+    outer['To'] = ", ".join(to)
 
     # Internal text container, create body of email
     """
@@ -60,6 +60,7 @@ def mail_report(to, ticker_name):
 
 def send_message(message):
     try:
+        print type(message['To'])
         # Create SMTP sender
         s = smtplib.SMTP("smtp.googlemail.com")         #In this program, I use google as SMTP server
         s.starttls()            # Put the SMTP connection in TLS (Transport Layer Security) mode. All SMTP commands that follow will be encrypted
@@ -71,9 +72,9 @@ def send_message(message):
             https://stackoverflow.com/questions/28421887/django-email-with-smtp-gmail-smtpauthenticationerror-534-application-specific-pa
         """
         # username = "type your email's account"
-        username = "your email account"
+        username = "your email acoun"
         # password = "type your email's password"
-        password = "your email's password"
+        password = "your email password"
         
         s.login(username, password)
         # Use sender to send an email
@@ -106,8 +107,11 @@ def queue_mail(message):
     mail_file.write(message.as_string() + "\n")
 
 if __name__ == "__main__":
-    recipients = ["perons1@gmail.com","perons2@qnap.com" , "perons3@yahoo.com.tw"]
-    for receiver in recipients:
-        email = mail_report(receiver, "GOOG")
-        # print email.as_string()     # print out the email
-        send_message(email)
+    recipients = ["peiyaochang@qnap.com","bacon687254@gmail.com" , "bacon735392@yahoo.com.tw"]
+    email = mail_report(recipients, "GOOG")
+    send_message(email)
+    
+    # for receiver in recipients:
+    #     email = mail_report(receiver, "GOOG")
+    #     # print email.as_string()     # print out the email
+    #     send_message(email)
